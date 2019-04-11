@@ -32,5 +32,6 @@
     <ClInclude Include="Graph.h" />
     <ClInclude Include="fltk.h" />
     <ClInclude Include="Window.h" />
+    <ClInclude Include="Node.h" />
   </ItemGroup>
 </Project>

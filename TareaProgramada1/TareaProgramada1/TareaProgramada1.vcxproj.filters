@@ -33,5 +33,6 @@
     <ClInclude Include="fltk.h" />
     <ClInclude Include="Window.h" />
     <ClInclude Include="Node.h" />
+    <ClInclude Include="LinePointer.h" />
   </ItemGroup>
 </Project>

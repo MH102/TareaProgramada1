@@ -7,7 +7,7 @@ class Node {
 	Graph_lib::Rectangle r2{ Point{50,40},30,30 };
 	Circle c{ Point(65, 55), 10 };
 	Text t{ Point{30,60},""};
-	Node *sig;
+	
 	int x;
 	int p;
 	public:
@@ -237,4 +237,8 @@ class Node {
 			}
 			return;
 		}
+		int getPos() {
+			return p;
+		}
+		Node *sig;
 };

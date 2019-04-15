@@ -34,5 +34,6 @@
     <ClInclude Include="Window.h" />
     <ClInclude Include="Node.h" />
     <ClInclude Include="LinePointer.h" />
+    <ClInclude Include="Tokenizador.h" />
   </ItemGroup>
 </Project>

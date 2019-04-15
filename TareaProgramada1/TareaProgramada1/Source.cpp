@@ -1,29 +1,25 @@
 
 #include <vector>
 #include "LinePointer.h"
-vector<Node*> nodos;
-void crearNodo(int x) {
-	if (nodos.size() == 0) {
-		Node *h = new Node(x, 1);
-		nodos.push_back(h);
-	}
-	else {
-		if (nodos.size() == 28) {
+Node* nodos[28];
+void crearNodo(int x,char nombre) {
+	Node* h = new Node(x, 1,nombre);
+	for (int i = 0; i < 28; i++) {
+		if (nodos[i] == 0) {
+			nodos[i] = h;
+			h->setPos(i + 1);
 			return;
 		}
-		else {
-			Node *t = nodos.at(0)->insert(x);
-			nodos.push_back(t);
-
-		}
 	}
-
+	return;
 }
-
-int main()
-{
-	
-	using namespace Graph_lib;
+void inicializarNodos() {
+	for (int i = 0; i < 28; i++) {
+		nodos[i] = 0;
+	}
+	return;
+}
+void abrirVentanaHeap() {
 	Point tl(100, 100);
 	Simple_window win(tl, 700, 400, "Grid");
 	int x_size = win.x_max();
@@ -40,45 +36,27 @@ int main()
 	grid.set_color(Color::blue);
 	grid.set_style(Line_style::dot);
 	win.attach(grid);
-	crearNodo(10);
-	crearNodo(54);
-	crearNodo(36);
-	crearNodo(3);
-	crearNodo(54);
-	crearNodo(36);
-	crearNodo(3);
-	crearNodo(54);
-	crearNodo(36);
-	crearNodo(3);
-	crearNodo(16);
-	crearNodo(7);
-	crearNodo(4);
-	crearNodo(99);
-	crearNodo(12);
-	crearNodo(16);
-	crearNodo(55);
-	crearNodo(31);
-	crearNodo(57);
-	crearNodo(47);
-	crearNodo(91);
-	crearNodo(15);
-	crearNodo(26);
-	crearNodo(73);
-	crearNodo(89);
-	crearNodo(45);
-	crearNodo(96);
-	nodos.at(15)->sig = nodos.at(25);
-	int a = nodos.at(22)->getPos();
-	crearNodo(a);
-	
-	for (int i = 0; i < nodos.size(); i++) {
-		nodos.at(i)->attach(win);
+	for (int i = 0; i < 28; i++) {
+		if (nodos[i] != 0) {
+			nodos[i]->attach(win);
+			draw_Line(nodos[i], win);
+		}
 	}
-	
-	
-	draw_Line(nodos.at(15), win);
 	win.wait_for_button();
+}
+int main()
+{
+	
+	using namespace Graph_lib;
+	
+	crearNodo(10,'a');
+	crearNodo(54,'b');
+	crearNodo(36,'c');
+	crearNodo(3,'d');
+	nodos[2]->sig = nodos[3];
+	nodos[0]->sig = nodos[2];
 
+	abrirVentanaHeap();
 };
 
 

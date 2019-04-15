@@ -4,7 +4,13 @@ using namespace Graph_lib;
 	
 	void draw_Line(Node *nodo, Simple_window &win) {
 		int pos = nodo->getPos();
-		int sPos = nodo->sig->getPos();
+		int sPos = 0;
+		if (nodo->sig) {
+			sPos = nodo->sig->getPos();
+		}
+		else {
+			return;
+		}
 		int posFija = pos;
 		int sPosFija=sPos;
 		int fila;

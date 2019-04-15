@@ -57,6 +57,7 @@ int main()
 	nodos[0]->sig = nodos[2];
 
 	abrirVentanaHeap();
+
 };
 
 

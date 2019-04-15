@@ -4,7 +4,6 @@
 #include <string>
 
 using namespace std;
-
 enum Tipo { variable, operador, numero, nulo };
 
 struct Token {

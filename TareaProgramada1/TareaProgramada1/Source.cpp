@@ -1,5 +1,5 @@
 
-#include <vector>
+#include "Tokenizador.h"
 #include "LinePointer.h"
 Node* nodos[28];
 void crearNodo(int x,char nombre) {
@@ -44,21 +44,52 @@ void abrirVentanaHeap() {
 	}
 	win.wait_for_button();
 }
+
+void abrirVentanaComandos() {
+	Point tl2(100, 100);
+	Simple_window win2(tl2, 500, 200, "Grid");
+	int x_size = win2.x_max();
+	int y_size = win2.y_max();
+	int x_grid = 100;
+	int y_grid = 100;
+	Fl_Input textbox(10, 170, 200, 23, 0);
+	win2.add(textbox);
+	
+
+	win2.wait_for_button();
+	std::string input = textbox.value();
+	std::cout << input;
+	Tokenizador tokenizador(input);
+	Token t=tokenizador.demeToken();
+	while (t.demeTipo()!= nulo) {
+		std::cout << t;
+		t = tokenizador.demeToken();
+	}
+	std::cout << t;
+}
 int main()
 {
 	
 	using namespace Graph_lib;
 	
-	crearNodo(10,'a');
-	crearNodo(54,'b');
-	crearNodo(36,'c');
-	crearNodo(3,'d');
+	crearNodo(10, 'a');
+	crearNodo(54, 'b');
+	crearNodo(36, 'c');
+	crearNodo(3, 'd');
+	crearNodo(41, 'l');
+	crearNodo(31, 'k');
+	crearNodo(3, 'g');
+	crearNodo(54, 'm');
+	crearNodo(36, 't');
+	crearNodo(3, 'n');
 	nodos[2]->sig = nodos[3];
-	nodos[0]->sig = nodos[2];
+	nodos[8]->sig = nodos[9];
 
-	abrirVentanaHeap();
+	
 
+	
+
+	abrirVentanaComandos();
 
 };
-
 

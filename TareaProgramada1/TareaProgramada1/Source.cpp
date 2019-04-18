@@ -54,6 +54,7 @@ void abrirVentanaComandos() {
 	int y_grid = 100;
 	Fl_Input textbox(10, 170, 200, 23, 0);
 	win2.add(textbox);
+	Vector<Token> parseTree;
 	
 
 	win2.wait_for_button();
@@ -63,9 +64,12 @@ void abrirVentanaComandos() {
 	Token t=tokenizador.demeToken();
 	while (t.demeTipo()!= nulo) {
 		std::cout << t;
+		parseTree.push_back(t);
 		t = tokenizador.demeToken();
 	}
+	parseTree.push_back(t);
 	std::cout << t;
+	cout << t.tokenS;
 }
 int main()
 {

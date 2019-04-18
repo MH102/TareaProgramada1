@@ -9,17 +9,17 @@ class Node {
 	Text t{ Point{30,60},""};
 	Text var{ Point{10,20},"" };
 	char nombre;
-	int x;
+	int valor;
 	int pos;
 	public:
 		Node(int num, int p, char nom, Node *nodo) {
-			x = num;
+			valor= num;
 			sig = nodo;
 			pos = p;
 			nombre = nom;
 			var.set_label(to_string(nombre));
 			mov();
-			t.set_label(to_string(x));
+			t.set_label(to_string(valor));
 			t.set_font(Font::times_bold);
 			t.set_color(Color::white);
 			var.set_font(Font::times_bold);
@@ -32,13 +32,13 @@ class Node {
 			r2.set_fill_color(Color::yellow);
 		}
 		Node(int num, int p, char nom) {
-			x = num;
+			valor = num;
 			nombre = nom;
 			sig = NULL;
 			pos = p;
 			mov();
 			var.set_label(to_string(nombre));
-			t.set_label(to_string(x));
+			t.set_label(to_string(valor));
 			t.set_font(Font::times_bold);
 			t.set_color(Color::white);
 			var.set_font(Font::times_bold);

@@ -4,7 +4,7 @@
 #include <string>
 
 using namespace std;
-enum Tipo { variable, operador, numero, nulo };
+enum Tipo { variable, operador, numero, nulo};
 
 struct Token {
 	Tipo tipo;
@@ -12,7 +12,7 @@ struct Token {
 	int num;
 	char tokenC;
 
-	Token(string st) { tipo = variable; tokenS = st; }
+	Token(string st) { tipo = variable; tokenS = st;  if (st == "While" || st == "new" || st == "Nodo" || st == "Repeat"||st=="sig")tipo = operador; }
 	Token(char s) { tipo = operador; tokenC = s; }
 	Token(int n) { tipo = numero; num = n; }
 	Token() : tipo{ nulo } { }
@@ -28,7 +28,10 @@ ostream& operator <<(ostream &os, Token & t) {
 		break;
 	}
 	case operador:
-		os << "[" << t.tokenC << "]" << "<opr>\n";
+		if (t.tokenS == "While" || t.tokenS == "new" || t.tokenS == "Nodo" || t.tokenS == "Repeat" || t.tokenS == "sig")
+			os << "[" << t.tokenS << "]" << "<opr>\n";
+		else 
+			os << "[" << t.tokenC << "]" << "<opr>\n";
 		break;
 	case numero:
 		os << "[" << t.num << "]" << "<num>\n";
@@ -71,7 +74,9 @@ Token Tokenizador::demeToken() {
 		return Token(v);
 	}
 	if (tira[pos] == '+' || tira[pos] == '-' ||
-		tira[pos] == '*' || tira[pos] == '/') {
+		tira[pos] == '*' || tira[pos] == '/'|| 
+		tira[pos]=='>'||tira[pos] == '='||tira[pos]=='('
+		||tira [pos]==')') {
 		return Token(tira[pos++]);
 	}
 	pos++;

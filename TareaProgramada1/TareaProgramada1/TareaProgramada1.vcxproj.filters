@@ -35,5 +35,6 @@
     <ClInclude Include="Node.h" />
     <ClInclude Include="LinePointer.h" />
     <ClInclude Include="Tokenizador.h" />
+    <ClInclude Include="Paraser.h" />
   </ItemGroup>
 </Project>

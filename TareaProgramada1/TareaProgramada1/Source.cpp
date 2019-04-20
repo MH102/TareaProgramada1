@@ -24,8 +24,8 @@ void borrarNodo(char c) {
 	return;
 }
 void setSiguiente(char c1, char c2) {
-	Node* h1;
-	Node* h2;
+	Node* h1 = 0;
+	Node* h2 = 0;
 	for (int i = 0; i < 28; i++) {
 		if (nodos[i]->getNombre() == c1) {
 			h1 = nodos[i];
@@ -34,7 +34,7 @@ void setSiguiente(char c1, char c2) {
 			h2 = nodos[i];
 		}
 	}
-	h1->sig = h2;
+	if(h1 && h2)h1->sig = h2;
 	return;
 }
 int generarNumeroAleatorio() {
@@ -74,6 +74,7 @@ void abrirVentanaHeap() {
 }
 
 void abrirVentanaComandos() {
+	using namespace Graph_lib;
 	Point tl2(100, 100);
 	Simple_window win2(tl2, 500, 200, "Grid");
 	int x_size = win2.x_max();
@@ -83,27 +84,29 @@ void abrirVentanaComandos() {
 	Fl_Input textbox(10, 170, 200, 23, 0);
 	win2.add(textbox);
 	Vector<Token> parseTree;
-	
-
-	win2.wait_for_button();
-	std::string input = textbox.value();
-	std::cout << input;
-	Tokenizador tokenizador(input);
-	Token t=tokenizador.demeToken();
-	while (t.demeTipo()!= nulo) {
-		std::cout << t;
+	while (true) {
+		win2.wait_for_button();
+		std::string input = textbox.value();
+		std::cout << input;
+		if (input == "heap") { abrirVentanaHeap(); continue; }
+		Tokenizador tokenizador(input);
+		Token t = tokenizador.demeToken();
+		while (t.demeTipo() != nulo) {
+			std::cout << t;
+			parseTree.push_back(t);
+			t = tokenizador.demeToken();
+		}
 		parseTree.push_back(t);
-		t = tokenizador.demeToken();
+		std::cout << t;
+		cout << t.tokenS;
 	}
-	parseTree.push_back(t);
-	std::cout << t;
-	cout << t.tokenS;
-
+}
+void callback1(Fl_Widget*, void*) {
+	ofstream out{ "collisions_vs_time.txt" };
+	out << "test" << endl;
 }
 int main()
 {
-	
-	using namespace Graph_lib;
 	
 	crearNodo(10, 'a');
 	crearNodo(54, 'b');

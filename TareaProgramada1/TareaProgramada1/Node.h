@@ -67,6 +67,9 @@ class Node {
 			pos = p;
 			mov();
 		}
+		char getNombre() {
+			return nombre;
+		}
 		void mov() {
 			switch (pos) {
 				case 1:

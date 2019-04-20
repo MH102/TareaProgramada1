@@ -13,6 +13,34 @@ void crearNodo(int x,char nombre) {
 	}
 	return;
 }
+void borrarNodo(char c) {
+	for (int i = 0; i < 28; i++) {
+		if (nodos[i]->getNombre() == c) {
+			delete(nodos[i]);
+			nodos[i] = 0;
+			return;
+		}
+	}
+	return;
+}
+void setSiguiente(char c1, char c2) {
+	Node* h1;
+	Node* h2;
+	for (int i = 0; i < 28; i++) {
+		if (nodos[i]->getNombre() == c1) {
+			h1 = nodos[i];
+		}
+		if (nodos[i]->getNombre() == c2) {
+			h2 = nodos[i];
+		}
+	}
+	h1->sig = h2;
+	return;
+}
+int generarNumeroAleatorio() {
+	int num = rand() % static_cast<int>(100);
+	return num;
+}
 void inicializarNodos() {
 	for (int i = 0; i < 28; i++) {
 		nodos[i] = 0;
@@ -70,6 +98,7 @@ void abrirVentanaComandos() {
 	parseTree.push_back(t);
 	std::cout << t;
 	cout << t.tokenS;
+
 }
 int main()
 {

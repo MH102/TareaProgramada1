@@ -1,4 +1,4 @@
-
+#include "Paraser.h"
 #include "Tokenizador.h"
 #include "LinePointer.h"
 Node* nodos[28];
@@ -84,6 +84,7 @@ void abrirVentanaComandos() {
 	Fl_Input textbox(10, 170, 200, 23, 0);
 	win2.add(textbox);
 	Vector<Token> parseTree;
+	Parser parser;
 	while (true) {
 		win2.wait_for_button();
 		std::string input = textbox.value();
@@ -97,8 +98,10 @@ void abrirVentanaComandos() {
 			t = tokenizador.demeToken();
 		}
 		parseTree.push_back(t);
-		std::cout << t;
-		cout << t.tokenS;
+		
+		if (!parser.Parse(parseTree)) {
+			cout << "Operacion invalida";
+		}
 	}
 }
 void callback1(Fl_Widget*, void*) {

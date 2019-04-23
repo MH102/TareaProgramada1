@@ -44,10 +44,10 @@ string Parser::Parse(vector<Token>parseTree)
 			}
 			return "";
 		}
-		if (primero.tokenS == "Repeat")
+		if (primero.tokenS == "repeat")
 		{
 			if (parseTree.at(2).demeTipo() == numero ) {
-				return "Repeat";
+				return "repeat";
 			}
 		
 

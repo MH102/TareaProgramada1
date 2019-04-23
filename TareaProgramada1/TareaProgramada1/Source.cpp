@@ -304,8 +304,8 @@ void abrirVentanaComandos() {
 				repeat(c1, repeet, random,  ops);
 			}
 			else {
-				repeet = std::stoi(parseTree.at(3).tokenS);
-				repeat(c1, repeet,parseTree.at(9).num, ops);
+				repeet =parseTree.at(3).num;
+				repeat(c1,repeet,parseTree.at(9).num, ops);
 			}
 			
 			
@@ -319,7 +319,7 @@ void abrirVentanaComandos() {
 		while (parseTree.size() != 0) {
 			parseTree.pop_back();
 		}
-
+		abrirVentanaHeap();
 	}
 	
 }

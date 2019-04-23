@@ -3,18 +3,18 @@
 #include "LinePointer.h"
 #include <random>
 Node* nodos[28];
-Node * crearNodo(int x,char nombre,Text &ops) {
+void crearNodo(int x,char nombre,Text &ops) {
 	Node* h = new Node(x, 1,nombre);
 	for (int i = 0; i < 28; i++) {
 		if (nodos[i] == 0) {
 			nodos[i] = h;
 			h->setPos(i + 1);
 			ops.set_label("Nodo creado");
-			return h;
+			return;
 		}
 	}
 	ops.set_label("Operacion fallida");
-	return h;
+	return;
 }
 void asignarValor(int x, char nombre, Text &ops) {
 	Node* h = new Node(x,1,nombre);
@@ -32,6 +32,12 @@ void asignarValor(int x, char nombre, Text &ops) {
 	ops.set_label("Operacion fallida");
 	return;
 }
+void asignarNombre(int i,int x) {
+	Node * h = new Node(x, i+1);
+	delete(nodos[i]);
+	nodos[i] = h;
+	return;
+}
 void borrarNodo(char c, Text &ops) {
 	for (int i = 0; i < 28; i++) {
 		if (nodos[i]) {
@@ -46,7 +52,7 @@ void borrarNodo(char c, Text &ops) {
 	ops.set_label("Operacion fallida");
 	return;
 }
-void setSiguiente(char c1, char c2, int x1, int x2, bool esnum, bool esnew, Text &ops) {
+void setSiguiente(char c1, char c2, int x1, int x2, int n1, bool esnum, bool esnew, Text &ops) {
 	Node* h1 = 0;
 	Node* h2 = 0;
 	for (int i = 0; i < 28; i++) {
@@ -59,7 +65,7 @@ void setSiguiente(char c1, char c2, int x1, int x2, bool esnum, bool esnew, Text
 			}
 		}
 	}
-	if (h1 && h2) {
+	if (h1 || h2) {
 		
 		while (x1 != 0 && h1) {
 			if (x1 == 1) {
@@ -72,7 +78,6 @@ void setSiguiente(char c1, char c2, int x1, int x2, bool esnum, bool esnew, Text
 			h2 = h2->sig;
 			x2--;
 		}
-		cout << esnew << endl;
 		if (esnum) {
 			if (c2 == 0) {
 				h1->sig = NULL;
@@ -92,8 +97,16 @@ void setSiguiente(char c1, char c2, int x1, int x2, bool esnum, bool esnew, Text
 			}
 		}
 		if (esnew) {
-			cout << "aqui estoy" << endl;
-			h1->sig = crearNodo(c2,0, ops);
+			crearNodo(n1, '?', ops);
+			for (int i = 0; i < 28; i++) {
+				if (nodos[i]) {
+					if (nodos[i]->getNombre() == '?') {
+						asignarNombre(i, n1);
+						h1->sig = nodos[i];
+						break;
+					}
+				}
+			}
 			if (ops.label() == "Operacion fallida") {
 				return;
 			}
@@ -203,6 +216,7 @@ void abrirVentanaComandos() {
 			int ciclo2 = 0;
 			char c1 = parseTree.at(0).tokenS[0];
 			char c2 = '0';
+			int n1;
 			for (int i = 0; i < parseTree.size(); i++) {
 				if (parseTree.at(i).tokenS == "sig") {
 					ciclo++;
@@ -214,13 +228,15 @@ void abrirVentanaComandos() {
 						esnum = true;
 					}
 					else {
-						cout << parseTree.at(i).tokenS << endl;
 						if (parseTree.at(i).tokenS == "new" && parseTree.at(i+1).tokenS == "Nodo") {
-							c2 = parseTree.at(i + 3).num;
-							if (c2 == '_') {
-								c2 = generarNumeroAleatorio();
+							if (parseTree.at(i + 3).tokenC == '_') {
+								n1 = generarNumeroAleatorio();
+							}
+							else {
+								n1 = parseTree.at(i + 3).num;
 							}
 							esnew = true;
+							cout << c2 << endl;
 						}
 						else {
 							c2 = parseTree.at(i).tokenS[0];
@@ -231,7 +247,7 @@ void abrirVentanaComandos() {
 							ciclo2++;
 						}
 					}
-					setSiguiente(c1, c2, ciclo, ciclo2, esnum, esnew, ops);
+					setSiguiente(c1, c2, ciclo, ciclo2, n1, esnum, esnew, ops);
 					break;
 				}
 			}
@@ -261,7 +277,7 @@ void callback1(Fl_Widget*, void*) {
 }
 int main()
 {
-	
+	inicializarNodos();
 	abrirVentanaComandos();
 
 };

@@ -12,18 +12,13 @@ class Node {
 	int valor;
 	int pos;
 	public:
-		Node(int num, int p, char nom, Node *nodo) {
+		Node(int num, int p) {
 			valor= num;
-			sig = nodo;
 			pos = p;
-			nombre = nom;
-			var.set_label(to_string(nombre));
 			mov();
 			t.set_label(to_string(valor));
 			t.set_font(Font::times_bold);
 			t.set_color(Color::white);
-			var.set_font(Font::times_bold);
-			var.set_color(Color::black);
 			c.set_color(Color::black);
 			c.set_fill_color(Color::blue);
 			r.set_color(Color::black);
@@ -79,6 +74,9 @@ class Node {
 		}
 		char getNombre() {
 			return nombre;
+		}
+		void setNombre(char c) {
+			nombre = c;
 		}
 		void mov() {
 			switch (pos) {

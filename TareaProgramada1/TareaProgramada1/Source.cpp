@@ -360,6 +360,7 @@ void abrirVentanaComandos() {
 		if (parser.Parse(parseTree) == "false") {
 			ops.set_label("Operacion no reconocida");
 		}
+
 		if (parser.Parse(parseTree) == "New Nodo") {
 			parseNewNodo(parser, parseTree, heapback, ops);
 		}

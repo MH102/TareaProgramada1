@@ -76,7 +76,7 @@ Token Tokenizador::demeToken() {
 	if (tira[pos] == '+' || tira[pos] == '-' ||
 		tira[pos] == '*' || tira[pos] == '/'|| 
 		tira[pos]=='>'||tira[pos] == '='||tira[pos]=='('
-		||tira [pos]==')') {
+		||tira [pos]==')' ||tira [pos]=='_') {
 		return Token(tira[pos++]);
 	}
 	pos++;

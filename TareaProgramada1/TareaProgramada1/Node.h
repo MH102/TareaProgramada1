@@ -60,12 +60,22 @@ class Node {
 			win.put_on_top(c);
 			win.put_on_top(t);
 		}
+		void detach(Simple_window &win) {
+			win.detach(c);
+			win.detach(r);
+			win.detach(r2);
+			win.detach(t);
+			win.detach(var);
+		}
 		int getPos() {
 			return pos;
 		}
 		void setPos(int p) {
 			pos = p;
 			mov();
+		}
+		void setValor(int x) {
+			valor = x;
 		}
 		char getNombre() {
 			return nombre;

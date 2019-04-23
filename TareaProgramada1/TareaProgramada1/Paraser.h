@@ -1,26 +1,38 @@
 #pragma once
 #include <vector>
 #include "Tokenizador.h"
-
 class Parser
 {
 public:
-	bool Parse(vector<Token> parseTree);
+	string Parse(vector<Token> parseTree);
 
 private:
 
 };
 
-bool Parser::Parse(vector<Token>parseTree)
+string Parser::Parse(vector<Token>parseTree)
 {
 
-
+	if (parseTree.size() < 3) {
+		return "false";
+	}
 	Token primero = parseTree.front();
+	Token next = parseTree.at(1);
 	if (primero.tipo == variable) {
 		if (primero.tokenS[0] >= 97 && primero.tokenS[0] <= 122 && primero.tokenS.length() == 1)
 		{
-			cout << "sif";
-			return true;
+			if (next.tokenC == '=') {
+				if (parseTree.at(2).tokenS == "new" && parseTree.at(3).tokenS == "Nodo") {
+					return "New Nodo";
+				}
+				else {
+					if (parseTree.at(2).tipo == numero) { return "valor"; }
+				}
+				cout << "sif";
+			}
+			if (parseTree.at(3).tokenS == "sig") {
+				return "asignacion";
+			}
 		}
 	}
 	else if (primero.tipo == operador)
@@ -28,14 +40,14 @@ bool Parser::Parse(vector<Token>parseTree)
 		if (primero.tokenS=="While")
 		{
 			cout << "yeet";
-			return true;
+			return "";
 		}
 		if (primero.tokenS == "Repeat")
 		{
 			cout << "yeetus that feetus";
-			return true;
+			return "";
 		}
 	}
-	return false;
+	return "false";
 	
 };

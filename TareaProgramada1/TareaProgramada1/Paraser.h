@@ -49,7 +49,7 @@ string Parser::Parse(vector<Token>parseTree)
 				}
 				cout << "sif";
 			}
-			if (parseTree.at(3).tokenS == "sig") {
+			if (parseTree.at(3).tokenS == "sig" || parseTree.at(3).tokenS == "v") {
 				return "asignacion";
 			}
 		}

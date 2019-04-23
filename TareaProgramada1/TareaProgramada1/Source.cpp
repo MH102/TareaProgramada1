@@ -220,6 +220,32 @@ void parseAsignacion(Parser parser, vector<Token> parseTree, Text &ops) {
 		if (parseTree.at(i).tokenS == "sig") {
 			ciclo++;
 		}
+		if (parseTree.at(i + 3).tokenS[0] == 'v') {
+			i += 2;
+			if (parseTree.at(i).tipo == numero) {
+				asignarValor(parseTree.at(i).num, parseTree.at(0).tokenS[0], ops);
+				return;
+			}
+			else {
+				int z = i;
+				while (parseTree.at(z).tokenS[0] != 'v') {
+					if (parseTree.at(z).tokenS == "sig") {
+						ciclo2++;
+					}
+					z++;
+				}
+				for (int i2 = 0; i2 < 28; i2++) {
+					if (nodos[i2]) {
+						if (nodos[i2]->getNombre() == parseTree.at(i).tokenS[0]) {
+							asignarValor(nodos[i2]->getValor(), parseTree.at(0).tokenS[0], ops);
+							return;
+						}
+					}
+				}
+				ops.set_label("Operacion fallida");
+				return;
+			}
+		}
 		if (parseTree.at(i).tokenC == '=' && parseTree.at(i).demeTipo() == operador) {
 			i++;
 			if (parseTree.at(i).tipo == numero) {

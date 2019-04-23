@@ -37,10 +37,10 @@ string Parser::Parse(vector<Token>parseTree)
 	}
 	else if (primero.tipo == operador)
 	{
-		if (primero.tokenS=="While")
+		if (primero.tokenS=="while")
 		{
 			if (parseTree.at(2).demeTipo() == variable && parseTree.at(2).tokenS[0] >= 97 && parseTree.at(2).tokenS[0] <= 122 && parseTree.at(2).tokenS.length() == 1) {
-				return "Whileasig";
+				return "whileasig";
 			}
 			return "";
 		}

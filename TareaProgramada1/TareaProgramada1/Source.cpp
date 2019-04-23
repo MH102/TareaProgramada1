@@ -185,6 +185,33 @@ vector<string> dividir(string tira) {
 	vec.push_back(final);
 	return vec;
 }
+void whileasig(char nom, Text &ops) {
+	Node* asignado = 0;
+	for (int i = 0; i < 28; i++) {
+		if (nodos[i]) {
+			if (nodos[i]->getNombre() == nom) {
+				asignado = nodos[i];
+			}
+		}
+	}
+	int cont = 0;
+	while (asignado) {
+		cont++;
+		asignado = asignado->sig;
+	}
+	std::string msj = "Ciclo realizado " + std::to_string(cont) + " veces";
+	ops.set_label(msj);
+}
+void repeat(char nom, int repet, int val, Text& ops) {
+
+	int cont = 0;
+	for (int i = 0; i < repet; i++) {
+		cont++;
+		crearNodo(val, nom, ops);
+	}
+	std::string msj = "Ciclo realizado " + std::to_string(cont) + " veces";
+	ops.set_label(msj);
+}
 void parseNewNodo(Parser parser, vector<Token> parseTree, int heapback, Text &ops) {
 	if (heapback == 0) {
 			if (parseTree.at(5).tokenC == '_') {
@@ -326,7 +353,7 @@ void abrirVentanaComandos() {
 		if (parser.Parse(parseTree) == "heapback") {
 			heapback = parseTree.at(1).num;
 		}
-		if (parser.Parse(parseTree) == "repeat") {
+		/*if (parser.Parse(parseTree) == "repeat") {
 			int repeats = parseTree.at(2).num;
 			Vector<Token> parseTree2;
 			vector<string> vec = dividir(input);
@@ -357,6 +384,7 @@ void abrirVentanaComandos() {
 				repeats--;
 			}
 		}
+		*/
 		if (parser.Parse(parseTree) == "false") {
 			ops.set_label("Operacion no reconocida");
 		}
@@ -371,6 +399,26 @@ void abrirVentanaComandos() {
 		}
 		if (parser.Parse(parseTree) == "Nodo a Nodo") {
 			parseNodoNodo(parser, parseTree, ops);
+		}
+		if (parser.Parse(parseTree) == "whileasig") {
+			char c1;
+			c1 = parseTree.at(2).tokenS[0];
+			whileasig(c1, ops);
+		}
+		if (parser.Parse(parseTree) == "repeat") {
+			char c1;
+			int repeet;
+			c1 = c1 = parseTree.at(3).tokenS[0];
+			if (parseTree.at(5).tokenC == '_') {
+				int random = generarNumeroAleatorio();
+				cout << random << endl;
+				repeet = std::stoi(parseTree.at(3).tokenS);
+				repeat(c1, repeet, random, ops);
+			}
+			else {
+				repeet = std::stoi(parseTree.at(3).tokenS);
+				repeat(c1, repeet, parseTree.at(9).num, ops);
+			}
 		}
 		tokenizador = Tokenizador("reset reset");
 		t = tokenizador.demeToken();

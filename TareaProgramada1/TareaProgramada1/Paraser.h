@@ -12,8 +12,10 @@ private:
 
 string Parser::Parse(vector<Token>parseTree)
 {
-	if (parseTree.size() <=2) {
-		if (parseTree.at(0).tokenS == "heapback" && parseTree.size()==1) {
+	Token primero;
+	Token next;
+	if (parseTree.size() <= 2) {
+		if (parseTree.size() == 1 && parseTree.front().tokenS == "heapback") {
 			parseTree.push_back(Token(28));
 			return "heapback";
 		}
@@ -24,50 +26,34 @@ string Parser::Parse(vector<Token>parseTree)
 	if (parseTree.size() < 3) {
 		return "false";
 	}
-	Token primero = parseTree.front();
-	Token next = parseTree.at(1);
+	primero = parseTree.front();
+	next = parseTree.at(1);
+	if (primero.tokenS == "repeat" && parseTree.at(2).num > 0) {
+		return "repeat";
+	}
 	if (primero.tipo == variable) {
-		if (primero.tipo == variable) {
-			if (primero.tokenS[0] >= 97 && primero.tokenS[0] <= 122 && primero.tokenS.length() == 1)
-			{
-				if (next.tokenC == '=') {
-					if (parseTree.at(2).tokenS == "new" && parseTree.at(3).tokenS == "Nodo") {
-						return "New Nodo";
-					}
+		if (primero.tokenS[0] >= 97 && primero.tokenS[0] <= 122 && primero.tokenS.length() == 1)
+		{
+			if (next.tokenC == '=') {
+				if (parseTree.at(2).tokenS == "new" && parseTree.at(3).tokenS == "Nodo") {
+					return "New Nodo";
+				}
+				else {
+					if (parseTree.at(2).tipo == numero) { return "valor"; }
 					else {
-						if (parseTree.at(2).tipo == numero) { return "valor"; }
-						else {
-							next = parseTree.at(2);
-							if (next.tokenS[0] >= 97 && next.tokenS[0] <= 122 && next.tokenS.length() == 1) {
-								return "Nodo a Nodo";
-							}
+						next = parseTree.at(2);
+						if (next.tokenS[0] >= 97 && next.tokenS[0] <= 122 && next.tokenS.length() == 1) {
+							return "Nodo a Nodo";
 						}
 					}
-					cout << "sif";
 				}
-				if (parseTree.at(3).tokenS == "sig") {
-					return "asignacion";
-				}
+				cout << "sif";
 			}
-		}
-	else if (primero.tipo == operador)
-	{
-		if (primero.tokenS=="While")
-		{
-			if (parseTree.at(2).demeTipo() == variable && parseTree.at(2).tokenS[0] >= 97 && parseTree.at(2).tokenS[0] <= 122 && parseTree.at(2).tokenS.length() == 1) {
-				return "Whileasig";
+			if (parseTree.at(3).tokenS == "sig") {
+				return "asignacion";
 			}
-			return "";
-		}
-		if (primero.tokenS == "Repeat")
-		{
-			if (parseTree.at(2).demeTipo() == numero ) {
-				return "Repeat";
-			}
-		
-
 		}
 	}
 	return "false";
-	
+
 };

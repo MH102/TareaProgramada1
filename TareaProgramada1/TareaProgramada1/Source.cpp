@@ -3,8 +3,8 @@
 #include "LinePointer.h"
 #include <random>
 Node* nodos[28];
-void crearNodo(int x,char nombre,Text &ops) {
-	Node* h = new Node(x, 1,nombre);
+void crearNodo(int x, char nombre, Text &ops) {
+	Node* h = new Node(x, 1, nombre);
 	for (int i = 0; i < 28; i++) {
 		if (nodos[i] == 0) {
 			nodos[i] = h;
@@ -17,7 +17,7 @@ void crearNodo(int x,char nombre,Text &ops) {
 	return;
 }
 void asignarValor(int x, char nombre, Text &ops) {
-	Node* h = new Node(x,1,nombre);
+	Node* h = new Node(x, 1, nombre);
 	for (int i = 0; i < 28; i++) {
 		if (nodos[i]) {
 			if (nodos[i]->getNombre() == nombre) {
@@ -32,8 +32,8 @@ void asignarValor(int x, char nombre, Text &ops) {
 	ops.set_label("Operacion fallida");
 	return;
 }
-void asignarNombre(int i,int x) {
-	Node * h = new Node(x, i+1);
+void asignarNombre(int i, int x) {
+	Node * h = new Node(x, i + 1);
 	delete(nodos[i]);
 	nodos[i] = h;
 	return;
@@ -72,7 +72,7 @@ void setSiguiente(char c1, char c2, int x1, int x2, int n1, bool esnum, bool esn
 		}
 	}
 	if (h1 || h2) {
-		
+
 		while (x1 != 0 && h1) {
 			if (x1 == 1) {
 				break;
@@ -173,7 +173,7 @@ void abrirVentanaHeap() {
 vector<string> dividir(string tira) {
 	string final;
 	vector<string> vec;
-	for (int i = 9 ; i < tira.size(); i++) {
+	for (int i = 9; i < tira.size(); i++) {
 		if (tira.at(i) == ';') {
 			vec.push_back(final);
 			final = "";
@@ -185,43 +185,16 @@ vector<string> dividir(string tira) {
 	vec.push_back(final);
 	return vec;
 }
-void whileasig(char nom, Text &ops) {
-	Node* asignado = 0;
-	for (int i = 0; i < 28; i++) {
-		if (nodos[i]) {
-			if (nodos[i]->getNombre() == nom) {
-				asignado = nodos[i];
-			}
-		}
-	}
-	int cont = 0;
-	while (asignado) {
-		cont++;
-		asignado = asignado->sig;
-	}
-	std::string msj = "Ciclo realizado " + std::to_string(cont) + " veces";
-	ops.set_label(msj);
-}
-void repeat(char nom, int repet, int val, Text& ops) {
-
-	int cont = 0;
-	for (int i = 0; i < repet; i++) {
-		cont++;
-		crearNodo(val, nom, ops);
-	}
-	std::string msj = "Ciclo realizado " + std::to_string(cont) + " veces";
-	ops.set_label(msj);
-}
 void parseNewNodo(Parser parser, vector<Token> parseTree, int heapback, Text &ops) {
 	if (heapback == 0) {
-			if (parseTree.at(5).tokenC == '_') {
-				int random = generarNumeroAleatorio();
-				crearNodo(random, parseTree.at(0).tokenS[0], ops);
-			}
-			else {
-				crearNodo(parseTree.at(5).num, parseTree.at(0).tokenS[0], ops);
-			}
+		if (parseTree.at(5).tokenC == '_') {
+			int random = generarNumeroAleatorio();
+			crearNodo(random, parseTree.at(0).tokenS[0], ops);
 		}
+		else {
+			crearNodo(parseTree.at(5).num, parseTree.at(0).tokenS[0], ops);
+		}
+	}
 	else {
 		if (parseTree.at(5).tokenC == '_') {
 			int random = generarNumeroAleatorio();
@@ -235,7 +208,7 @@ void parseNewNodo(Parser parser, vector<Token> parseTree, int heapback, Text &op
 		}
 	}
 }
-void parseAsignacion(Parser parser, vector<Token> parseTree,Text &ops) {
+void parseAsignacion(Parser parser, vector<Token> parseTree, Text &ops) {
 	bool esnum = false;
 	bool esnew = false;
 	int ciclo = 0;
@@ -321,7 +294,7 @@ void abrirVentanaComandos() {
 	using namespace Graph_lib;
 	Point tl2(100, 100);
 	Simple_window win2(tl2, 500, 200, "Grid");
-	Text ops(Point(200,25),"");
+	Text ops(Point(200, 25), "");
 	ops.set_color(Color::black);
 	ops.set_font(Font::times_bold);
 	int x_size = win2.x_max();
@@ -353,12 +326,12 @@ void abrirVentanaComandos() {
 		if (parser.Parse(parseTree) == "heapback") {
 			heapback = parseTree.at(1).num;
 		}
-		/*if (parser.Parse(parseTree) == "repeat") {
+		if (parser.Parse(parseTree) == "repeat") {
 			int repeats = parseTree.at(2).num;
 			Vector<Token> parseTree2;
 			vector<string> vec = dividir(input);
 			while (repeats != 0) {
-				for(int i = 0; i < vec.size(); i++){
+				for (int i = 0; i < vec.size(); i++) {
 					Tokenizador tokenizador2(vec.at(i));
 					Token t2 = tokenizador2.demeToken();
 					cout << parser.Parse(parseTree2) << endl;
@@ -384,7 +357,6 @@ void abrirVentanaComandos() {
 				repeats--;
 			}
 		}
-		*/
 		if (parser.Parse(parseTree) == "false") {
 			ops.set_label("Operacion no reconocida");
 		}
@@ -399,26 +371,6 @@ void abrirVentanaComandos() {
 		}
 		if (parser.Parse(parseTree) == "Nodo a Nodo") {
 			parseNodoNodo(parser, parseTree, ops);
-		}
-		if (parser.Parse(parseTree) == "Whileasig") {
-			char c1;
-			c1 = parseTree.at(2).tokenS[0];
-			whileasig(c1, ops);
-		}
-		if (parser.Parse(parseTree) == "Repeat") {
-			char c1;
-			int repeet;
-			c1 = c1 = parseTree.at(3).tokenS[0];
-			if (parseTree.at(5).tokenC == '_') {
-				int random = generarNumeroAleatorio();
-				cout << random << endl;
-				repeet = std::stoi(parseTree.at(3).tokenS);
-				repeat(c1, repeet, random, ops);
-			}
-			else {
-				repeet = std::stoi(parseTree.at(3).tokenS);
-				repeat(c1, repeet, parseTree.at(9).num, ops);
-			}
 		}
 		tokenizador = Tokenizador("reset reset");
 		t = tokenizador.demeToken();
@@ -437,4 +389,3 @@ int main()
 	abrirVentanaComandos();
 
 };
-

@@ -13,7 +13,7 @@ void crearNodo(int x,char nombre,Text &ops) {
 			return;
 		}
 	}
-	ops.set_label("Operacion fallida");
+	ops.set_label("Operacion fallida (Overflow)");
 	return;
 }
 void asignarValor(int x, char nombre, Text &ops) {
@@ -51,6 +51,12 @@ void borrarNodo(char c, Text &ops) {
 	}
 	ops.set_label("Operacion fallida");
 	return;
+}
+void limpiarHeap() {
+	for (int i = 0; i < 28; i++) {
+		delete(nodos[i]);
+		nodos[i] = 0;
+	}
 }
 void setSiguiente(char c1, char c2, int x1, int x2, int n1, bool esnum, bool esnew, Text &ops) {
 	Node* h1 = 0;
@@ -164,7 +170,126 @@ void abrirVentanaHeap() {
 		}
 	}
 }
+vector<string> dividir(string tira) {
+	string final;
+	vector<string> vec;
+	for (int i = 9 ; i < tira.size(); i++) {
+		if (tira.at(i) == ';') {
+			vec.push_back(final);
+			final = "";
+		}
+		else {
+			final += tira.at(i);
+		}
+	}
+	vec.push_back(final);
+	return vec;
+}
+void parseNewNodo(Parser parser, vector<Token> parseTree, int heapback, Text &ops) {
+	if (heapback == 0) {
+			if (parseTree.at(5).tokenC == '_') {
+				int random = generarNumeroAleatorio();
+				crearNodo(random, parseTree.at(0).tokenS[0], ops);
+			}
+			else {
+				crearNodo(parseTree.at(5).num, parseTree.at(0).tokenS[0], ops);
+			}
+		}
+	else {
+		if (parseTree.at(5).tokenC == '_') {
+			int random = generarNumeroAleatorio();
+			nodos[heapback - 1] = new Node(random, heapback, parseTree.at(0).tokenS[0]);
+			heapback--;
 
+		}
+		else {
+			nodos[heapback - 1] = new Node(parseTree.at(5).num, heapback, parseTree.at(0).tokenS[0]);
+			heapback--;
+		}
+	}
+}
+void parseAsignacion(Parser parser, vector<Token> parseTree,Text &ops) {
+	bool esnum = false;
+	bool esnew = false;
+	int ciclo = 0;
+	int ciclo2 = 0;
+	char c1 = parseTree.at(0).tokenS[0];
+	char c2 = '0';
+	int n1;
+	for (int i = 0; i < parseTree.size(); i++) {
+		if (parseTree.at(i).tokenS == "sig") {
+			ciclo++;
+		}
+		if (parseTree.at(i).tokenC == '=' && parseTree.at(i).demeTipo() == operador) {
+			i++;
+			if (parseTree.at(i).tipo == numero) {
+				c2 = parseTree.at(i).num;
+				esnum = true;
+			}
+			else {
+				if (parseTree.at(i).tokenS == "new" && parseTree.at(i + 1).tokenS == "Nodo") {
+					if (parseTree.at(i + 3).tokenC == '_') {
+						n1 = generarNumeroAleatorio();
+					}
+					else {
+						n1 = parseTree.at(i + 3).num;
+					}
+					esnew = true;
+					cout << c2 << endl;
+				}
+				else {
+					c2 = parseTree.at(i).tokenS[0];
+				}
+			}
+			for (i; i < parseTree.size(); i++) {
+				if (parseTree.at(i).tokenS == "sig") {
+					ciclo2++;
+				}
+			}
+			setSiguiente(c1, c2, ciclo, ciclo2, n1, esnum, esnew, ops);
+			break;
+		}
+	}
+}
+void parseValor(Parser parser, vector<Token> parseTree, Text &ops) {
+	if (parseTree.at(2).num != 0) {
+		asignarValor(parseTree.at(2).num, parseTree.at(0).tokenS[0], ops);
+	}
+	else {
+		borrarNodo(parseTree.at(0).tokenS[0], ops);
+	}
+}
+void parseNodoNodo(Parser parser, vector<Token> parseTree, Text &ops) {
+	Node * h1 = 0;
+	Node * h2 = 0;
+	int pos;
+	int x;
+	char nombre;
+	for (int i = 0; i < 28; i++) {
+		if (nodos[i]) {
+			if (nodos[i]->getNombre() == parseTree.at(0).tokenS[0]) {
+				h1 = nodos[i];
+				pos = i;
+			}
+			if (nodos[i]->getNombre() == parseTree.at(2).tokenS[0]) {
+				h2 = nodos[i];
+				nombre = h2->getNombre();
+				x = h2->getValor();
+			}
+		}
+	}
+	if (h1 && h2) {
+
+		nodos[pos] = 0;
+		delete(h1);
+		crearNodo(x, nombre, ops);
+		nodos[h2->getPos() - 1] = 0;
+		delete(h2);
+	}
+	else {
+		ops.set_label("Operacion fallida");
+	}
+}
 void abrirVentanaComandos() {
 	using namespace Graph_lib;
 	Point tl2(100, 100);
@@ -181,12 +306,14 @@ void abrirVentanaComandos() {
 	win2.attach(ops);
 	Vector<Token> parseTree;
 	Parser parser;
+	int heapback = 0;
 	while (true) {
 		win2.wait_for_button();
 		std::string input = textbox.value();
 		std::cout << input;
 		if (input == "heap") { abrirVentanaHeap(); continue; }
 		if (input == "exit") { break; }
+		if (input == "limpiar heap") { limpiarHeap(); continue; }
 		Tokenizador tokenizador(input);
 		Token t = tokenizador.demeToken();
 		while (t.demeTipo() != nulo) {
@@ -196,69 +323,54 @@ void abrirVentanaComandos() {
 		}
 		parseTree.push_back(t);
 		cout << parser.Parse(parseTree) << endl;
+		if (parser.Parse(parseTree) == "heapback") {
+			heapback = parseTree.at(1).num;
+		}
+		if (parser.Parse(parseTree) == "repeat") {
+			int repeats = parseTree.at(2).num;
+			Vector<Token> parseTree2;
+			vector<string> vec = dividir(input);
+			while (repeats != 0) {
+				for(int i = 0; i < vec.size(); i++){
+					Tokenizador tokenizador2(vec.at(i));
+					Token t2 = tokenizador2.demeToken();
+					cout << parser.Parse(parseTree2) << endl;
+					while (t2.demeTipo() != nulo) {
+						std::cout << t2;
+						parseTree2.push_back(t2);
+						t2 = tokenizador2.demeToken();
+					}
+					parseTree2.push_back(t2);
+					if (parser.Parse(parseTree2) == "New Nodo") {
+						parseNewNodo(parser, parseTree2, heapback, ops);
+					}
+					if (parser.Parse(parseTree2) == "asignacion") {
+						parseAsignacion(parser, parseTree2, ops);
+					}
+					if (parser.Parse(parseTree2) == "valor") {
+						parseValor(parser, parseTree2, ops);
+					}
+					if (parser.Parse(parseTree2) == "Nodo a Nodo") {
+						parseNodoNodo(parser, parseTree2, ops);
+					}
+				}
+				repeats--;
+			}
+		}
 		if (parser.Parse(parseTree) == "false") {
 			ops.set_label("Operacion no reconocida");
 		}
 		if (parser.Parse(parseTree) == "New Nodo") {
-			if(parseTree.at(5).tokenC == '_'){			
-				int random = generarNumeroAleatorio();
-				cout << random << endl;
-				crearNodo(random, parseTree.at(0).tokenS[0],ops);
-			}
-			else {
-				crearNodo(parseTree.at(5).num, parseTree.at(0).tokenS[0],ops);
-			}
+			parseNewNodo(parser, parseTree, heapback, ops);
 		}
 		if (parser.Parse(parseTree) == "asignacion") {
-			bool esnum = false;
-			bool esnew = false;
-			int ciclo = 0;
-			int ciclo2 = 0;
-			char c1 = parseTree.at(0).tokenS[0];
-			char c2 = '0';
-			int n1;
-			for (int i = 0; i < parseTree.size(); i++) {
-				if (parseTree.at(i).tokenS == "sig") {
-					ciclo++;
-				}
-				if (parseTree.at(i).tokenC == '=' && parseTree.at(i).demeTipo()==operador) {
-					i++;
-					if (parseTree.at(i).tipo == numero) { 
-						c2 = parseTree.at(i).num;
-						esnum = true;
-					}
-					else {
-						if (parseTree.at(i).tokenS == "new" && parseTree.at(i+1).tokenS == "Nodo") {
-							if (parseTree.at(i + 3).tokenC == '_') {
-								n1 = generarNumeroAleatorio();
-							}
-							else {
-								n1 = parseTree.at(i + 3).num;
-							}
-							esnew = true;
-							cout << c2 << endl;
-						}
-						else {
-							c2 = parseTree.at(i).tokenS[0];
-						}
-					}
-					for (i; i < parseTree.size(); i++) {
-						if (parseTree.at(i).tokenS == "sig") {
-							ciclo2++;
-						}
-					}
-					setSiguiente(c1, c2, ciclo, ciclo2, n1, esnum, esnew, ops);
-					break;
-				}
-			}
+			parseAsignacion(parser, parseTree, ops);
 		}
 		if (parser.Parse(parseTree) == "valor") {
-			if (parseTree.at(2).num != 0) {
-				asignarValor(parseTree.at(2).num, parseTree.at(0).tokenS[0], ops);
-			}
-			else {
-				borrarNodo(parseTree.at(0).tokenS[0],ops);
-			}
+			parseValor(parser, parseTree, ops);
+		}
+		if (parser.Parse(parseTree) == "Nodo a Nodo") {
+			parseNodoNodo(parser, parseTree, ops);
 		}
 		tokenizador = Tokenizador("reset reset");
 		t = tokenizador.demeToken();
@@ -270,10 +382,6 @@ void abrirVentanaComandos() {
 			parseTree.pop_back();
 		}
 	}
-}
-void callback1(Fl_Widget*, void*) {
-	ofstream out{ "collisions_vs_time.txt" };
-	out << "test" << endl;
 }
 int main()
 {

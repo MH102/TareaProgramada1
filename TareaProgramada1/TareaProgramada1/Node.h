@@ -72,6 +72,9 @@ class Node {
 		void setValor(int x) {
 			valor = x;
 		}
+		int getValor() {
+			return valor;
+		}
 		char getNombre() {
 			return nombre;
 		}

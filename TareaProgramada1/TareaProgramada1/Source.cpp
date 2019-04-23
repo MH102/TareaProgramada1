@@ -52,6 +52,34 @@ void borrarNodo(char c, Text &ops) {
 	ops.set_label("Operacion fallida");
 	return;
 }
+void whileasig(char nom,Text &ops) {
+	Node* asignado = 0;
+	for (int i = 0; i < 28; i++) {
+		if (nodos[i]) {
+			if (nodos[i]->getNombre() == nom) {
+				asignado = nodos[i];
+			}
+		}
+	}
+	int cont = 0;
+	while (asignado) {
+		cont++;
+		asignado = asignado->sig;
+	}
+	std::string msj= "Ciclo realizado " + std::to_string(cont) + " veces";
+	ops.set_label(msj);
+}
+void repeat(char nom, int repet,int val, Text& ops) {
+	
+	int cont = 0;
+	for (int i = 0; i < repet; i++) {
+		cont++;
+		crearNodo(val, nom, ops);
+	}
+	std::string msj = "Ciclo realizado " + std::to_string(cont) + " veces";
+	ops.set_label(msj);
+}
+
 void setSiguiente(char c1, char c2, int x1, int x2, int n1, bool esnum, bool esnew, Text &ops) {
 	Node* h1 = 0;
 	Node* h2 = 0;
@@ -260,6 +288,28 @@ void abrirVentanaComandos() {
 				borrarNodo(parseTree.at(0).tokenS[0],ops);
 			}
 		}
+		if (parser.Parse(parseTree) == "Whileasig") {
+			char c1;
+			c1 = parseTree.at(2).tokenS[0];
+			whileasig(c1, ops);
+		}
+		if (parser.Parse(parseTree) == "Repeat") {
+			char c1;
+			int repeet;
+			c1= c1 = parseTree.at(3).tokenS[0];
+			if (parseTree.at(5).tokenC == '_') {
+				int random = generarNumeroAleatorio();
+				cout << random << endl;
+				repeet = std::stoi(parseTree.at(3).tokenS);
+				repeat(c1, repeet, random,  ops);
+			}
+			else {
+				repeet = std::stoi(parseTree.at(3).tokenS);
+				repeat(c1, repeet,parseTree.at(9).num, ops);
+			}
+			
+			
+		}
 		tokenizador = Tokenizador("reset reset");
 		t = tokenizador.demeToken();
 		while (t.demeTipo() != nulo) {
@@ -269,7 +319,9 @@ void abrirVentanaComandos() {
 		while (parseTree.size() != 0) {
 			parseTree.pop_back();
 		}
+
 	}
+	
 }
 void callback1(Fl_Widget*, void*) {
 	ofstream out{ "collisions_vs_time.txt" };

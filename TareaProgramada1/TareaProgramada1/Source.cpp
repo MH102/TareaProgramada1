@@ -400,12 +400,12 @@ void abrirVentanaComandos() {
 		if (parser.Parse(parseTree) == "Nodo a Nodo") {
 			parseNodoNodo(parser, parseTree, ops);
 		}
-		if (parser.Parse(parseTree) == "whileasig") {
+		if (parser.Parse(parseTree) == "Whileasig") {
 			char c1;
 			c1 = parseTree.at(2).tokenS[0];
 			whileasig(c1, ops);
 		}
-		if (parser.Parse(parseTree) == "repeat") {
+		if (parser.Parse(parseTree) == "Repeat") {
 			char c1;
 			int repeet;
 			c1 = c1 = parseTree.at(3).tokenS[0];

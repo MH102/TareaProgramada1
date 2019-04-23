@@ -12,7 +12,15 @@ private:
 
 string Parser::Parse(vector<Token>parseTree)
 {
-
+	if (parseTree.size() <=2) {
+		if (parseTree.at(0).tokenS == "heapback" && parseTree.size()==1) {
+			parseTree.push_back(Token(28));
+			return "heapback";
+		}
+		else {
+			return "heapback";
+		}
+	}
 	if (parseTree.size() < 3) {
 		return "false";
 	}

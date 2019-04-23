@@ -45,6 +45,26 @@ public:
 		r2.set_color(Color::black);
 		r2.set_fill_color(Color::yellow);
 	}
+	Node(int num, int p, char nom, Node * h) {
+		valor = num;
+		nombre = nom;
+		sig = NULL;
+		pos = p;
+		mov();
+		sig = h;
+		var.set_label(to_string(nombre));
+		t.set_label(to_string(valor));
+		t.set_font(Font::times_bold);
+		t.set_color(Color::white);
+		var.set_font(Font::times_bold);
+		var.set_color(Color::black);
+		c.set_color(Color::black);
+		c.set_fill_color(Color::blue);
+		r.set_color(Color::black);
+		r.set_fill_color(Color::blue);
+		r2.set_color(Color::black);
+		r2.set_fill_color(Color::yellow);
+	}
 	void attach(Simple_window &win) {
 		win.attach(c);
 		win.attach(r);
@@ -77,6 +97,9 @@ public:
 	}
 	char getNombre() {
 		return nombre;
+	}
+	Node* getSiguiente() {
+		return sig;
 	}
 	void setNombre(char c) {
 		nombre = c;

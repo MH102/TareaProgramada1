@@ -17,7 +17,15 @@ void crearNodo(int x, char nombre, Text &ops) {
 	return;
 }
 void asignarValor(int x, char nombre, Text &ops) {
-	Node* h = new Node(x, 1, nombre);
+	Node * sig = NULL;
+	for (int i = 0; i < 28; i++) {
+		if (nodos[i]) {
+			if (nodos[i]->getNombre() == nombre) {
+				sig = nodos[i]->getSiguiente();
+			}
+		}
+	}
+	Node* h = new Node(x, 1, nombre, sig);
 	for (int i = 0; i < 28; i++) {
 		if (nodos[i]) {
 			if (nodos[i]->getNombre() == nombre) {
@@ -215,12 +223,12 @@ void parseAsignacion(Parser parser, vector<Token> parseTree, Text &ops) {
 	int ciclo2 = 0;
 	char c1 = parseTree.at(0).tokenS[0];
 	char c2 = '0';
-	int n1;
+	int n1 = 0;
 	for (int i = 0; i < parseTree.size(); i++) {
 		if (parseTree.at(i).tokenS == "sig") {
 			ciclo++;
 		}
-		if (parseTree.at(i + 3).tokenS[0] == 'v') {
+		if (parseTree.at(i).tokenS[0] == 'v') {
 			i += 2;
 			if (parseTree.at(i).tipo == numero) {
 				asignarValor(parseTree.at(i).num, parseTree.at(0).tokenS[0], ops);

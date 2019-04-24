@@ -302,5 +302,6 @@ public:
 		}
 		return;
 	}
+	bool linea = false;
 	Node *sig;
 };

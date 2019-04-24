@@ -12,6 +12,7 @@ struct Simple_window : Window {
 		button_pushed(false),
 		next_button(Point(x_max() - 70, 0), 70, 20, "Next", cb_next) {
 		attach(next_button);
+		
 	}
 
 	void wait_for_button()

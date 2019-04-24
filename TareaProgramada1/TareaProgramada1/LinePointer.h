@@ -117,10 +117,15 @@ void draw_Line(Node *nodo, Simple_window &win) {
 	opl28.set_color(Color::black);
 	static Open_polyline opl2_28;
 	opl2_28.set_color(Color::black);
-	if(!nodo->linea){
-	
 	int pos = nodo->getPos();
 	int sPos = 0;
+	int posFija = pos;
+	int sPosFija = sPos;
+	int fila;
+	int filapos;
+	if(!nodo->linea){
+	
+	
 	if (nodo->sig) {
 		nodo->linea = true;
 		sPos = nodo->sig->getPos();
@@ -128,10 +133,7 @@ void draw_Line(Node *nodo, Simple_window &win) {
 	else {
 		return;
 	}
-	int posFija = pos;
-	int sPosFija = sPos;
-	int fila;
-	int filapos;
+	
 	
 	if (pos <= 7)
 		filapos = 55;
@@ -1619,7 +1621,118 @@ void draw_Line(Node *nodo, Simple_window &win) {
 	}
 }else
 	{
-	return;
+	switch (pos)
+	{
+	case 1:
+		win.attach(opl1);
+		break;
+	case 2:
+		
+		win.attach(opl2);
+		break;
+	case 3:
+		
+		win.attach(opl3);
+		break;
+	case 4:
+		
+		win.attach(opl4);
+		break;
+	case 5:
+		
+		win.attach(opl5);
+		break;
+	case 6:
+		
+		win.attach(opl6);
+		break;
+	case 7:
+		
+		win.attach(opl7);
+		break;
+	case 8:
+		
+		win.attach(opl8);
+		break;
+	case 9:
+		
+		win.attach(opl9);
+		break;
+	case 10:
+		
+		win.attach(opl10);
+		break;
+	case 11:
+		
+		win.attach(opl11);
+		break;
+	case 12:
+		
+		win.attach(opl12);
+		break;
+	case 13:
+		
+		win.attach(opl13);
+		break;
+	case 14:
+		
+		win.attach(opl14);
+		break;
+	case 15:
+		
+		win.attach(opl15);
+		break;
+	case 16:
+		
+		win.attach(opl16);
+		break;
+	case 17:
+		
+		win.attach(opl8);
+		break;
+	case 18:
+		
+		win.attach(opl8);
+		break;
+	case 19:
+		
+		win.attach(opl19);
+		break;
+	case 20:
+		
+		win.attach(opl20);
+		break;
+	case 21:
+		
+		win.attach(opl21);
+		break;
+	case 22:
+		
+		win.attach(opl22);
+		break;
+	case 23:
+		
+		win.attach(opl23);
+		break;
+	case 24:
+		
+		win.attach(opl24);
+		break;
+	case 25:
+		
+		win.attach(opl25);
+		break;
+	case 26:
+		win.attach(opl26);
+		break;
+	case 27:
+		win.attach(opl27);
+		break;
+	case 28:
+		
+		win.attach(opl28);
+		break;
+		}
 	}
 	
 

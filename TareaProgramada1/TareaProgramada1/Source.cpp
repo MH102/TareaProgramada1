@@ -193,7 +193,7 @@ void abrirVentanaHeap() {
 vector<string> dividir(string tira) {
 	string final;
 	vector<string> vec;
-	for (int i = 9; i < tira.size(); i++) {
+	for (int i = 10; i < tira.size(); i++) {
 		if (tira.at(i) == ';') {
 			vec.push_back(final);
 			final = "";
@@ -227,6 +227,7 @@ void parseNewNodo(Parser parser, vector<Token> parseTree, int heapback, Text &op
 			heapback--;
 		}
 	}
+	return;
 }
 void parseAsignacion(Parser parser, vector<Token> parseTree, Text &ops) {
 	bool esnum = false;
@@ -434,7 +435,6 @@ void abrirVentanaComandos() {
 		while (parseTree.size() != 0) {
 			parseTree.pop_back();
 		}
-		abrirVentanaHeap(); 
 	}
 }
 int main()

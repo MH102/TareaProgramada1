@@ -438,6 +438,7 @@ void abrirVentanaComandos() {
 		while (parseTree.size() != 0) {
 			parseTree.pop_back();
 		}
+		abrirVentanaHeap();
 	}
 }
 int main()

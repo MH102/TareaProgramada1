@@ -150,7 +150,7 @@ void inicializarNodos() {
 }
 void abrirVentanaHeap() {
 	Point tl(100, 100);
-	Simple_window win(tl, 700, 400, "Grid");
+	Simple_window win(tl, 700, 400, "Heap");
 	int x_size = win.x_max();
 	int y_size = win.y_max();
 	int x_grid = 100;
@@ -168,7 +168,7 @@ void abrirVentanaHeap() {
 	for (int i = 0; i < 28; i++) {
 		if (nodos[i] != 0) {
 			nodos[i]->attach(win);
-			draw_Line(nodos[i], win,i);
+			draw_Line(nodos[i], win);
 		}
 	}
 	win.wait_for_button();
@@ -341,6 +341,7 @@ void abrirVentanaComandos() {
 	Vector<Token> parseTree;
 	Parser parser;
 	int heapback = 0;
+	
 	while (true) {
 		win2.wait_for_button();
 		std::string input = textbox.value();
@@ -415,7 +416,7 @@ void abrirVentanaComandos() {
 		while (parseTree.size() != 0) {
 			parseTree.pop_back();
 		}
-		abrirVentanaHeap();
+		abrirVentanaHeap(); 
 	}
 }
 int main()

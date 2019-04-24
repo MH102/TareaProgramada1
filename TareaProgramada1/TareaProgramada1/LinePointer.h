@@ -1,4 +1,5 @@
 #include "Node.h"
+#include <iostream>
 using namespace Graph_lib;
 
 	
@@ -120,15 +121,16 @@ void draw_Line(Node *nodo, Simple_window &win) {
 	int pos = nodo->getPos();
 	int sPos = 0;
 	int posFija = pos;
-	int sPosFija = sPos;
+	int sPosFija;
 	int fila;
 	int filapos;
 	if(!nodo->linea){
 	
-	
+		
 	if (nodo->sig) {
 		nodo->linea = true;
 		sPos = nodo->sig->getPos();
+		sPosFija = sPos;
 	}
 	else {
 		return;

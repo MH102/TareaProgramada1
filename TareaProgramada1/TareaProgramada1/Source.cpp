@@ -46,6 +46,17 @@ void asignarNombre(int i, int x) {
 	nodos[i] = h;
 	return;
 }
+void buscarValor(char nombre, Text &ops) {
+	for (int i = 0; i < 28; i++) {
+		if (nodos[i]) {
+			if (nodos[i]->getNombre() == nombre) {
+				ops.set_label(to_string(nodos[i]->getValor()));
+				return;
+			}
+		}
+	}
+	ops.set_label("Operacion fallida");
+}
 void borrarNodo(char c, Text &ops) {
 	for (int i = 0; i < 28; i++) {
 		if (nodos[i]) {
@@ -60,7 +71,8 @@ void borrarNodo(char c, Text &ops) {
 	ops.set_label("Operacion fallida");
 	return;
 }
-void limpiarHeap() {
+void limpiarHeap(Text &ops) {
+	ops.set_label("Heap limpiado");
 	for (int i = 0; i < 28; i++) {
 		delete(nodos[i]);
 		nodos[i] = 0;
@@ -229,6 +241,12 @@ void parseAsignacion(Parser parser, vector<Token> parseTree, Text &ops) {
 			ciclo++;
 		}
 		if (parseTree.at(i).tokenS[0] == 'v') {
+			cout << parseTree.size() << endl;
+			if (parseTree.size() == 5) {
+
+				buscarValor(parseTree.at(0).tokenS[0], ops);
+				return;
+			}
 			i += 2;
 			if (parseTree.at(i).tipo == numero) {
 				asignarValor(parseTree.at(i).num, parseTree.at(0).tokenS[0], ops);
@@ -347,7 +365,7 @@ void abrirVentanaComandos() {
 		std::cout << input;
 		if (input == "heap") { abrirVentanaHeap(); continue; }
 		if (input == "exit") { break; }
-		if (input == "limpiar heap") { limpiarHeap(); continue; }
+		if (input == "limpiar heap") { limpiarHeap(ops); continue; }
 		Tokenizador tokenizador(input);
 		Token t = tokenizador.demeToken();
 		while (t.demeTipo() != nulo) {

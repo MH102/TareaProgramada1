@@ -46,12 +46,16 @@ void asignarNombre(int i, int x) {
 	nodos[i] = h;
 	return;
 }
-void buscarValor(char nombre, Text &ops) {
+void buscarValor(char nombre, int ciclos, Text &ops) {
 	for (int i = 0; i < 28; i++) {
 		if (nodos[i]) {
 			if (nodos[i]->getNombre() == nombre) {
-				ops.set_label(to_string(nodos[i]->getValor()));
-				return;
+				Node * h = nodos[i];
+				while (ciclos != 0 && h) {
+					h = h->sig;
+					ciclos--;
+				}
+				if (h) { ops.set_label(to_string(h->getValor())); return; }
 			}
 		}
 	}
@@ -242,10 +246,9 @@ void parseAsignacion(Parser parser, vector<Token> parseTree, Text &ops) {
 			ciclo++;
 		}
 		if (parseTree.at(i).tokenS[0] == 'v') {
-			cout << parseTree.size() << endl;
-			if (parseTree.size() == 5) {
+			if (parseTree.size() == i+2) {
 
-				buscarValor(parseTree.at(0).tokenS[0], ops);
+				buscarValor(parseTree.at(0).tokenS[0], ciclo, ops);
 				return;
 			}
 			i += 2;

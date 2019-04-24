@@ -168,7 +168,7 @@ void abrirVentanaHeap() {
 	for (int i = 0; i < 28; i++) {
 		if (nodos[i] != 0) {
 			nodos[i]->attach(win);
-			draw_Line(nodos[i], win);
+			draw_Line(nodos[i], win,i);
 		}
 	}
 	win.wait_for_button();
@@ -415,6 +415,7 @@ void abrirVentanaComandos() {
 		while (parseTree.size() != 0) {
 			parseTree.pop_back();
 		}
+		abrirVentanaHeap();
 	}
 }
 int main()
